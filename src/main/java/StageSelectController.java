@@ -1,4 +1,3 @@
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +8,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class StageSelectController {
+
+    @FXML
+    private ImageView leaderBoardBtn;
     @FXML
     private ImageView stage1Btn;
     @FXML
@@ -16,25 +18,40 @@ public class StageSelectController {
     @FXML
     private ImageView stage3Btn;
 
-    private void jmpStage(int stageId) {
-        Scene scene = null;
-        try {
-            scene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/stage" + stageId + ".fxml"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Main.primaryStage.setScene(scene);
-    }
-
-    public void jmpStage1() {
+    @FXML
+    private void jmpStage1() {
         jmpStage(1);
     }
 
-    public void jmpStage2() {
+    @FXML
+    private void jmpStage2() {
         jmpStage(2);
     }
 
-    public void jmpStage3() {
+    @FXML
+    private void jmpStage3() {
         jmpStage(3);
+    }
+
+    @FXML
+    private void leaderBoard() {
+        // 在这里添加显示排行榜的代码
+        try {
+            Scene scene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/leaderboard.fxml"))));
+            Main.primaryStage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 可以在这里添加日志记录或显示错误信息给用户
+        }
+    }
+
+    private void jmpStage(int stageId) {
+        try {
+            Scene scene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/stage" + stageId + ".fxml"))));
+            Main.primaryStage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 可以在这里添加日志记录或显示错误信息给用户
+        }
     }
 }

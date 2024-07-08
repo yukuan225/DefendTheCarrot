@@ -15,6 +15,11 @@
             <Image url="@../assets/imgs/menu/select-bg.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="leaderBoardBtn" fitHeight="100" fitWidth="100" layoutX="1080.0" layoutY="15" onMouseClicked="#leaderBoard" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/imgs/menu/leaderboard.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="stage1Btn" fitHeight="221.0" fitWidth="263.0" layoutX="55.0" layoutY="105.0" onMouseClicked="#jmpStage1" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/imgs/menu/stage_1.png" />
@@ -33,6 +38,7 @@
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="500.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/imgs/menu/select-word.png" />
-         </image></ImageView>
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
