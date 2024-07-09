@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public class StageSelectController {
 
+    public GetAPIAnswer apiAnswer;
+
     @FXML
     private ImageView leaderBoardBtn;
     @FXML
@@ -17,6 +19,8 @@ public class StageSelectController {
     private ImageView stage2Btn;
     @FXML
     private ImageView stage3Btn;
+    @FXML
+    private ImageView modelBtn;
 
     @FXML
     private void jmpStage1() {
@@ -50,6 +54,16 @@ public class StageSelectController {
             Scene scene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("fxml/stage" + stageId + ".fxml"))));
             Main.primaryStage.setScene(scene);
         } catch (IOException e) {
+            e.printStackTrace();
+            // 可以在这里添加日志记录或显示错误信息给用户
+        }
+    }
+
+    @FXML
+    private void model() {
+        try {
+            GetAPIAnswer.start();
+        } catch (Exception e) {
             e.printStackTrace();
             // 可以在这里添加日志记录或显示错误信息给用户
         }

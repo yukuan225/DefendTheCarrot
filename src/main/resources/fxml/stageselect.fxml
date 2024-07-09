@@ -15,6 +15,11 @@
             <Image url="@../assets/imgs/menu/select-bg.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="modelBtn" fitHeight="60" fitWidth="60" layoutX="50.0" layoutY="350" onMouseClicked="#model" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/imgs/menu/model.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="leaderBoardBtn" fitHeight="100" fitWidth="100" layoutX="1080.0" layoutY="15" onMouseClicked="#leaderBoard" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/imgs/menu/leaderboard.png" />
