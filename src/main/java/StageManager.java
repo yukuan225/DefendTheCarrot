@@ -3,6 +3,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -30,6 +31,8 @@ public class StageManager {
     private int currentWave;
     private int totalWave;
     private BasicStageController.coinChangeListener onCoinChange;
+
+
     public int getCoinNum() { return coinNum; }
 
     public int getCurrentWave() { return currentWave; }
@@ -114,7 +117,12 @@ public class StageManager {
         this.monsterList.add(newMonster);
     }
 
-    public int update() {
+    public int update() throws SQLException {
+
+        int consumed_coins;
+        int remaining_health;
+        int score;
+
         // 更新怪物
         for(Iterator<MyMonster> mIt=monsterList.iterator(); mIt.hasNext();) {
             MyMonster m = mIt.next();
@@ -223,6 +231,14 @@ public class StageManager {
         }
         if(this.waveFinish && this.monsterList.isEmpty()) {
             if(this.currentWave == this.totalWave) {
+
+                consumed_coins=coinNum;
+                remaining_health= carrot.hp;
+                score=consumed_coins+remaining_health*10;
+                String username = loginhandle.user;
+                GameEndController gameEndController=new GameEndController();
+                gameEndController.onGameEnd(username,remaining_health,consumed_coins,score);
+
                 return Utils.GAME_CLEAR;
             }
             // 下一轮开始
@@ -248,6 +264,8 @@ public class StageManager {
                     generateCount = (Utils.updateInterval+generateCount)%Utils.monsterAppearInterval;
                 }
             },Utils.waveInterval, Utils.updateInterval);
+
+
         }
         return Utils.GAME_CONTINUE;
     }

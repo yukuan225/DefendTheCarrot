@@ -1,32 +1,46 @@
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class DatabaseManager {
-    private static final String URL = "jdbc:mysql://localhost:3306/your_database";
-    private static final String USER = "your_username";
-    private static final String PASSWORD = "your_password";
+public class DatabaseManager{
+    private static final String URL = "jdbc:mysql://localhost:3306/defendthecarrot";
+    private static final String USER = "root";
+    private static final String PASSWORD = "123456";
 
-    public static List<LeaderboardController.PlayerRecord> getLeaderboard() {
-        List<LeaderboardController.PlayerRecord> records = new ArrayList<>();
-        String query = "SELECT username, health, coins, score FROM leaderboard";
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
 
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-
-            while (resultSet.next()) {
-                String username = resultSet.getString("username");
-                int health = resultSet.getInt("health");
-                int coins = resultSet.getInt("coins");
-                int score = resultSet.getInt("score");
-
-                records.add(new LeaderboardController.PlayerRecord(username, health, coins, score));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static void savePlayerRecord(String username, int remaining_health, int consumed_coins, int score) throws SQLException {
+        String sql = "INSERT INTO game (username, remaining_health, consumed_coins, score) VALUES (?, ?, ?, ?)";
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setInt(2, remaining_health);
+            stmt.setInt(3, consumed_coins);
+            stmt.setInt(4, score);
+            stmt.executeUpdate();
         }
+    }
 
-        return records;
+    public static ResultSet getPlayerRecords() throws SQLException {
+        String sql = "SELECT username, remaining_health, consumed_coins, score FROM game";
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        return stmt.executeQuery();
+    }
+
+    public static void updatePlayerRecord(String username, int remainingHealth, int consumedCoins, int score) throws SQLException {
+        // SQL 更新语句
+        String sql = "UPDATE player_records SET remaining_health = ?, consumed_coins = ?, score = ? WHERE username = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, remainingHealth);
+            pstmt.setInt(2, consumedCoins);
+            pstmt.setInt(3, score);
+            pstmt.setString(4, username);
+            pstmt.executeUpdate();
+        }
     }
 }

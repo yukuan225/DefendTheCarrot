@@ -9,6 +9,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LeaderboardController {
 
@@ -19,10 +21,10 @@ public class LeaderboardController {
     private TableColumn<PlayerRecord, String> usernameColumn;
 
     @FXML
-    private TableColumn<PlayerRecord, Integer> healthColumn;
+    private TableColumn<PlayerRecord, Integer> remaining_healthColumn;
 
     @FXML
-    private TableColumn<PlayerRecord, Integer> coinsColumn;
+    private TableColumn<PlayerRecord, Integer> consumed_coinsColumn;
 
     @FXML
     private TableColumn<PlayerRecord, Integer> scoreColumn;
@@ -41,30 +43,47 @@ public class LeaderboardController {
     @FXML
     public void initialize() {
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        healthColumn.setCellValueFactory(new PropertyValueFactory<>("health"));
-        coinsColumn.setCellValueFactory(new PropertyValueFactory<>("coins"));
+        remaining_healthColumn.setCellValueFactory(new PropertyValueFactory<>("remaining_health"));
+        consumed_coinsColumn.setCellValueFactory(new PropertyValueFactory<>("consumed_coins"));
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
 
-        // 示例数据
-        ObservableList<PlayerRecord> data = FXCollections.observableArrayList(
-                new PlayerRecord("玩家1", 100, 50, 2000),
-                new PlayerRecord("玩家2", 80, 60, 1800),
-                new PlayerRecord("玩家3", 90, 40, 2200)
-        );
+        ObservableList<PlayerRecord> data = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = DatabaseManager.getPlayerRecords();
+            while (rs.next()) {
+                data.add(new PlayerRecord(rs.getString("username"), rs.getInt("remaining_health"), rs.getInt("consumed_coins"), rs.getInt("score")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        leaderboardTable.setItems(data);
+    }
+
+    public void reloadData() {
+        ObservableList<PlayerRecord> data = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = DatabaseManager.getPlayerRecords();
+            while (rs.next()) {
+                data.add(new PlayerRecord(rs.getString("username"), rs.getInt("remaining_health"), rs.getInt("consumed_coins"), rs.getInt("score")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         leaderboardTable.setItems(data);
     }
 
     public static class PlayerRecord {
         private final String username;
-        private final Integer health;
-        private final Integer coins;
+        private final Integer remaining_health ;
+        private final Integer consumed_coins;
         private final Integer score;
 
-        public PlayerRecord(String username, Integer health, Integer coins, Integer score) {
+        public PlayerRecord(String username, Integer remaining_health, Integer consumed_coins, Integer score) {
             this.username = username;
-            this.health = health;
-            this.coins = coins;
+            this.remaining_health = remaining_health;
+            this.consumed_coins = consumed_coins;
             this.score = score;
         }
 
@@ -72,12 +91,12 @@ public class LeaderboardController {
             return username;
         }
 
-        public Integer getHealth() {
-            return health;
+        public Integer getRemaining_health() {
+            return remaining_health;
         }
 
-        public Integer getCoins() {
-            return coins;
+        public Integer getConsumed_coins() {
+            return consumed_coins;
         }
 
         public Integer getScore() {

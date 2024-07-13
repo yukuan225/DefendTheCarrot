@@ -19,6 +19,14 @@ public class Register extends JFrame {
         this.setVisible(true);
     }
     private void initialize(){
+        ((JPanel) this.getContentPane()).setOpaque(false);
+        ImageIcon img = new ImageIcon("C:/Users/24648/Desktop/DefendTheCarrot/src/main/resources/assets/imgs/stage1/BG1-hd.png");
+        JLabel background = new JLabel(img);
+        this.getLayeredPane().add(background, Integer.valueOf(Integer.MIN_VALUE));
+        background.setBounds(0, 0, 400, 500);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JLabel label = new JLabel("用户注册");
         label.setBounds(170,100, 120, 25);
         label.setFont(new Font(null, Font.BOLD, 18));// 字体设置

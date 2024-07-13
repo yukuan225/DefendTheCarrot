@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class GetAPIAnswer {
     public static void start() {
         JFrame frame = new JFrame("星火大模型案例");
-        frame.setSize(900, 600);
+        frame.setSize(800, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
 
@@ -16,7 +16,7 @@ public class GetAPIAnswer {
         JScrollPane scrollPane1 = new JScrollPane(textArea1);
 
         JLabel label2 = new JLabel("答案：");
-        JTextArea textArea2 = new JTextArea(10, 60);
+        JTextArea textArea2 = new JTextArea(10, 70);
         JScrollPane scrollPane2 = new JScrollPane(textArea2);
         JButton button = new JButton("提问");
 
